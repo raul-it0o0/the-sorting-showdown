@@ -1,0 +1,226 @@
+\documentclass[a4paper]{article}
+\usepackage{hyperref}
+\usepackage{epigraph}
+\usepackage{pgf}
+\usepackage[T1]{fontenc}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand*{\textnormal}[1]{\text{ #1 }}
+\renewcommand{\epigraphflush}{center}
+\setlength{\epigraphwidth}{0.75\textwidth}
+
+
+
+
+\begin{document}
+    \title{A \textbf{theoretical} and \textbf{experimental} comparison of popular sorting algorithms}
+    % reconsider title after completion
+    \author{Raul-Andrei Ariton \\ Department of Computer Science \\ West University of Timișoara \\}
+    % insert email
+    \maketitle
+
+    \begin{abstract}
+        
+        Aside from it being an assignment for a university course, 
+        this paper aims to compare the performance, in terms of time complexity
+        of popular and well-known sorting algorithms among the Computer Science community.
+
+        Mainly, however, it is an opportunity for me to put \textbf{theory into practice}
+        and confirm that what I have learned so far regarding sorting algorithms is in fact correct.
+
+        It is also my first formal paper written, as well as my first paper written in \LaTeX.
+
+        In this paper I will compare the following sorting algorithms, 
+        some of which were taught in the Algorithmics (ADS I) course.
+
+        I end this abstract with one of my favorite quotes, that of 
+        \href{https://en.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz}{Gottfried Wilhelm Leibniz}, 
+        the inventor of one of the first mechanical calculators, the 
+        \href{https://en.wikipedia.org/wiki/Stepped_reckoner}{step reckoner}:
+
+        \epigraph{\textit{
+        ``... it is beneath
+        the dignity of excellent men
+        to waste their time in calculation 
+        when any peasant
+        could do the work just as accurately with the aid 
+        of a machine.''}}{\href{https://en.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz}{-- Gottfried Wilhelm Leibniz}}
+        
+    \end{abstract} 
+
+    \newpage
+
+    \tableofcontents
+
+    \newpage
+        
+    
+    
+    \section{The problem of sorting}
+
+        Before getting into sorting methods / algorithms, I shall formally introduce the problem of sorting in
+        Computer Science. Consider the following problem:
+        \\
+
+    \textbf{Input:} A sequence of $n$ numbers $\langle a_1 , a_2 , \dots , a_n  \rangle$ 
+    
+    
+    \textbf{Output:} A permutation (reordering) $\langle a_1^{'}, a_2^{'} , \dots , a_n^{'}\rangle$ of the inputs
+    such that
+     
+    $$a_1^{'} \preceq a_2^{'} \preceq \dots \preceq a_n^{'}$$
+
+    where $\preceq$ is an order relation (predicate).
+    \\
+    \\
+    \noindent The above describes the sorting problem in Computer Science.
+
+    \subsection{Elements of  a sorting problem}
+        A sorting problem may consist of:
+        \begin{itemize}
+            \item The \textbf{record}, the collection of data to be sorted.
+                    
+                    In my theoretical explanations and implementations, the record
+                    will be considered an array of numbers.
+            \item The \textbf{key}, the value to be sorted, or in other words, the value that
+                    determines the reordering of the record.
+                    
+                    In my theoretical explanations and implementations, the keys will be
+                    considered numerical values (numbers)
+            \item The \textbf{satellite data}, which are values carried around with the key,
+                    which do not determine the reordering of the record. In practice, when
+                    reordering keys, a sorting algorithm must permute the satellite data along with
+                    its respective key.
+        \end{itemize}
+
+    \section{Why is the problem of sorting so important?}
+        Although sorting might seem like a rare problem in Computer Science applications, it is considered the most fundamental problem in the study of algorithms. Here's a few reasons why:
+        \begin{itemize}
+            \item Many algorithms use sorting as a key subroutine, 
+                or require a sorted array as a prerequisite. 
+                
+                An example of such an algorithm is Binary Search, which has a complexity of $O(\log n)$
+                and requires a sorted array which speeds things up compared to the well-known Linear Search 
+                algorithm, with a complexity of $O(n)$.
+            \item The vast catalog of sorting algorithms that exist 
+            today employ a rich set of techniques. 
+            In fact, teaching various sorting algorithms also teaches 
+            various algorithm design techniques. 
+            I will discuss the various techniques used by the sorting algorithms 
+            in this present paper in each case. 
+            
+            In essence, understanding the various techniques used in sorting algorithms, 
+            one obtains \textit{an amazing amount of power}, 
+            that can be applied to solve other types of problems.
+        \end{itemize}
+
+    \section{The``superior" sorting algorithm}
+        There is no such thing as “the best sorting algorithm”. 
+        Many might say Quick Sort is the one, with a complexity of $O(n\log n)$
+        (\textit{We will notice in our experiments that in some cases Quick Sort is not so reliable}).
+        
+        \noindent However, the best sorting algorithm depends on the situation. 
+        Not all sorting problems are the same, therefore there isn't a “one-for-all” algorithm 
+        which should be used each time.
+
+        \begin{itemize}
+            \item Bubble Sort is used by some TV providers 
+                in order to sort channels based on audience viewing time.
+            \item Merge sort is used on databases, because of the large sets of data, 
+                that are too large to be loaded into memory as a whole.
+            \item Quick sort is used to \textit{quickly} sort sports scores in real-time.
+        \end{itemize}
+        
+
+    \section{The Algorithms}
+
+        This section aims to describe the main idea each sorting algorithm individually,
+        its pseudocode implementation as well as its implementation in the \textbf{Python} programming
+        language.
+
+        % Pseudocode of the algorithms, analysis of the algorithm
+        % design technique, corectness analysis (???), 
+        % complexity analysis, sorting algorithm stability and how
+        % an unstable sorting algorithm could mess things up
+
+        % We can think of what we explained so far as a scientifical hypothesis.
+        % A hypothesis becomes a fact when it remains true through multiple
+        % experiments.
+        % So, does this theory hold in practice?
+
+        \part{In-place comparison-based sorting algorithms}
+
+            \subsection{Bubble Sort}
+                \textbf{Bubble Sort} is an in-place, comparison-based sorting algorithm.
+                \subsubsection*{Main Idea}
+                The array to be sorted is traversed repeatedly, 
+                adjacent elements are compared and swapped if they are out of order. 
+                The traversal stops when during a 
+                traversal no swapping has taken place (\textit{i.e. when the array becomes sorted}).
+                \subsubsection*{Pseudocode}
+                \subsubsection*{Implementation (in Python)}
+
+            \subsection{Insertion Sort}
+                \textbf{Insertion Sort} is an in-place, comparison based algorithm.
+                \subsubsection*{Main Idea}
+                The algorithm starts sorting the elements starting 
+                from the right-most element to the left-most element.
+
+                Starting with the \textit{second 
+                element} in the array (\textbf{we consider
+                the first element as sorted}), we
+                compare it with every previous element
+                (\textit{for example, in the first instance, the second element gets
+                compared with the first}) and
+                proceed moving leftwards in the array, until we
+                find an element such that if we place the current element
+                after it, the sorting order will hold.
+                \subsubsection*{Pseudocode}
+                \subsubsection*{Implementation (in Python)}
+            
+            \subsection{Selection Sort}
+                \textbf{Selection Sort} is an in-place, comparison based algorithm.
+                \subsubsection*{Main Idea}
+                Starting with the first element in the array, for each element at position
+                \verb|i| we search for a \textbf{minimum value} in the sub-array
+                \verb|x[i...n]|, where \verb|n| is the size of the array.
+
+                If the minimum value found in the sub-array is less than the
+                element at position \verb|i|, we swap the element at position \verb|i|
+                with that minimum value
+                (\textit{hence} \verb|IF arr[x]<arr[i] THEN swap(x[i],x[k])|).
+
+                This process is repeated \verb|n-1| times, because after all
+                the iterations, the last element will be \textbf{naturally sorted}
+                (\textit{hence} \verb|FOR i := 1 , n-1 DO|).
+
+                \subsubsection*{Pseudocode}
+                \subsubsection*{Implementation (in Python)}
+        \part{Not-in-place comparison-based sorting algorithms}
+            \subsection{Quick Sort}
+            \textbf{Quick Sort} is different from what we've encountered so far. 
+            It uses the \textbf{“divide and conquer”} 
+            (also known as the “divide and rule”) 
+            technique. \textit{Who knew that a policy used in ancient times to maintain power, 
+            by great rulers, could be implemented in solving a sorting problem?}
+            Additionally, Quick Sort does not sort in place like all sorting algorithms mentioned so far.
+            
+            \input{../assets/Figure_1.pgf}
+                \subsubsection*{Main Idea}
+
+
+
+            \subsection{Merge Sort}
+        \part{Not comparison-based sorting algorithms}
+            \subsection{Counting Sort}
+            \subsection{Radix Sort}
+        
+
+    \section{Experimental Comparison}
+        \subsection{Methodology}
+            How measurements were made (how execution time was measured), comparisons made to
+            confirm results, make table with comparison times, etc.
+        \subsection{Implementation, in Python}
+            Write the code in Python,
+
+
+\end{document}
