@@ -1,12 +1,13 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib as mpl
-import list_generators 
+import time
+import csv
+import list_generators
+
+test_num = 3
 
 import sys
+# Raising recursion limit to avoiding runtime errors
 sys.setrecursionlimit(100000)
 
-# Quicksort
 def quick_sort(arr, end, start=0):
 
     if start < end:
@@ -34,83 +35,53 @@ def partition(arr, start, end):
 
 if __name__ == '__main__':
     
-    fig, ax = plt.subplots(2,3, figsize=(15,6), layout='constrained')
-    plt.rcParams['text.usetex'] = True
+    problem_sizes = [100,500,5000,10000,25000,50000,75000,100000,500000,1000000,2000000,5000000,10000000]
+    test_cases = {1:2**(8*2)}
+    array_generation_commands = {'random':list_generators.generate_random,
+                                 'sorted':list_generators.generate_random_sorted,
+                                 'reverse_sorted':list_generators.generate_random_reverse_sorted,
+                                 'flat_list':list_generators.generate_flat_list_shuffled}
     
-    problem_sizes = [100,500,5000,10000,25000,50000,75000,100000,500000,1000000]
 
-    generate_graph_using_range('random_with_duplicates',ax[0][0],problem_sizes,0,1,ax[1][0])
-    generate_graph_using_range('sorted',ax[0][0],problem_sizes[:6:],0,1)
-    generate_graph_using_range('reverse_sorted',ax[0][0],problem_sizes[:6:],0,1)
-    generate_graph_using_range('flat_list_not_shuffled',ax[0][0],problem_sizes[:6:],0,1)
-    generate_graph_using_range('flat_list_shuffled',ax[0][0],problem_sizes[:6:],0,1)
+    for test_case in test_cases:
+        for sorting_config_id in array_generation_commands:
 
-    generate_graph_using_range('random_with_duplicates',ax[0][1],problem_sizes,1,2,ax[1][1])
-    generate_graph_using_range('sorted',ax[0][1],problem_sizes[:6:],1,2)
-    generate_graph_using_range('reverse_sorted',ax[0][1],problem_sizes[:6:],1,2)
-    generate_graph_using_range('flat_list_not_shuffled',ax[0][1],problem_sizes[:6:],1,2)
-    generate_graph_using_range('flat_list_shuffled',ax[0][1],problem_sizes[:6:],1,2)
-    
-    generate_graph_using_range('random_with_duplicates',ax[0][2],problem_sizes,2,4,ax[1][2])
-    generate_graph_using_range('sorted',ax[0][2],problem_sizes[:6:],2,4)
-    generate_graph_using_range('reverse_sorted',ax[0][2],problem_sizes[:6:],2,4)
-    generate_graph_using_range('flat_list_not_shuffled',ax[0][2],problem_sizes[:6:],2,4)
-    generate_graph_using_range('flat_list_shuffled',ax[0][2],problem_sizes[:6:],2,4)
+            sum = 0
 
-    plt.show()
+            for problem_size in problem_sizes:
 
-# def generate_graph_using_range(list_config,axis,problem_sizes,min_byte_size,max_byte_size,axis_secondary=None):
-    
-#     if min_byte_size != 0:
-#         start_val = 2**(min_byte_size*8)
-#     else:
-#         start_val = 0
-#     stop_val = 2**(max_byte_size*8)-1
+                if ((sum / test_num) > 30):
+                    print(f'{sorting_config_id} with size {problem_size} took {sum / test_num} seconds. Continue? (Y/N)')
+                    if input() == 'N':
+                        break
+                
 
-#     exec_times = []
+                to_append = [problem_size, sorting_config_id]
+                sum = 0
 
-#     sum = 0 
-#     # 3 tests per problem size and average computation, ensure accuracy and avoid experiment errors (unexpected values)
+                for _ in range(test_num): 
 
-#     for problem_size in problem_sizes:
-#         for _ in range(3):
-#             l = list_generators.list_config_properties[list_config][0](problem_size,start_val,stop_val)
-#             # generate_random(problem_size,start_val,stop_val)
-#             # generate list to be sorted
+                    array = array_generation_commands[sorting_config_id](problem_size,0,test_cases[test_case]+1)
+                    
+                    sorted_array = sorted(array)
 
-#             l_sorted = sorted(l)
-#             # for sorting assertion
+                    # time measurement starts just before the sorting function call
+                    time_start = time.perf_counter()
+                    quick_sort(array,len(array)-1)
+                    time_end = time.perf_counter()
 
-#             time_start = time.perf_counter()
-#             l = quick_sort(l,len(l)-1)
-#             time_end = time.perf_counter()
+                    # time measurement ends right after sorting function return
+                        
+                    # assert array equality to ensure sorting has gone correctly
+                    assert array == sorted_array
 
-#             assert l_sorted == l
+                    execution_time = time_end - time_start
+                    sum += execution_time
 
-#             exec_time = time_end - time_start
-#             sum += exec_time
-        
-#         exec_times.append(sum/3)
-#         print(f'Finished problem size {problem_size} for {list_config} values [{start_val},{stop_val}].')
+                with open(r'results_quicksort.csv','a',newline='') as fout:
+                    
+                    csv_writer = csv.writer(fout)
+                    to_append.append('quicksort')
+                    to_append.append(sum / test_num)
 
-#     print(f'Finished {list_config} graph for values [{start_val},{stop_val}].') 
-#     # to ensure everything is going well (optional)
-
-#     axis.set_xlabel('Number of elements to sort')
-#     axis.set_ylabel('Execution time ($s$)')
-#     axis.set_title(f'Values range [${start_val},{stop_val}$]')
-#     axis.grid('True')
-
-#     if axis_secondary != None:
-#         axis_secondary.set_xlabel('Number of elements to sort')
-#         axis_secondary.set_ylabel('Execution time ($s$)')
-#         axis_secondary.grid('True')
-#         axis_secondary.plot(problem_sizes,
-#                             exec_times,
-#                             color=list_config_properties[list_config][1],
-#                             label=list_config_properties[list_config][2])
-
-#     return axis.plot(problem_sizes,
-#               exec_times,
-#               color=list_config_properties[list_config][1],
-#               label=list_config_properties[list_config][2])
+                    csv_writer.writerow(to_append)
